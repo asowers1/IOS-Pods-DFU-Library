@@ -235,12 +235,19 @@ internal class BaseDFUPeripheral<TD : BasePeripheralDelegate> : NSObject, BaseDF
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        // This empty method has to be here, otherwise the BaseCommonDFUPeripheral does not get this callback
-        
-        // Don't use central manager while DFU is in progress!
-        print("DFU in progress, don't use this CentralManager instance!")
-        central.stopScan()
+		if peripheral.name == "DfuTarg" {
+            self.peripheral = peripheral
+            centralManager.connect(peripheral, options: nil)
+		}
     }
+    
+//    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+//        // This empty method has to be here, otherwise the BaseCommonDFUPeripheral does not get this callback
+//        
+//        // Don't use central manager while DFU is in progress!
+//        print("DFU in progress, don't use this CentralManager instance!")
+//        central.stopScan()
+//    }
     
     // MARK: - Peripheral Delegate methods
     
